@@ -1,5 +1,6 @@
 package com.example.company.message.unit.validator;
 
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_DTO_DATE;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -10,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DateTimeValidatorTest {
-
-  private static final String EXAMPLE_DTO_DATE = "2020-10-27T14:34:06.132Z";
 
   private DateTimeValidator dateTimeValidator;
   private ConstraintValidatorContext mockConstraintValidatorContext;

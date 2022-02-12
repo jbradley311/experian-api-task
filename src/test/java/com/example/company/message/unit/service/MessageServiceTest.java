@@ -37,6 +37,7 @@ public class MessageServiceTest {
   @Test
   void willSaveValidMessageToRepository() {
     messageService.register(mockMessageDto);
+
     verify(messageMappingService, times(1)).toMessage(any());
     verify(mockMessageRepository, times(1)).save(any());
   }

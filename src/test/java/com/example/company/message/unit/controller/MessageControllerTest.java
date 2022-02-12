@@ -1,5 +1,7 @@
 package com.example.company.message.unit.controller;
 
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_DTO_DATE;
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_MESSAGE_DTO_ID_ONE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -29,9 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @WebMvcTest(MessageController.class)
 public class MessageControllerTest {
 
-  private static final String EXAMPLE_MESSAGE_DTO_ID = "12345678901";
-  private static final String EXAMPLE_DTO_DATE = "2020-10-27T14:34:06.132Z";
-  public static final String EXAMPLE_INVALID_MESSAGE_DTO_ID = "A123F";
+  private static final String EXAMPLE_INVALID_MESSAGE_DTO_ID = "A123F";
 
   @Autowired
   private MockMvc mockmvc;
@@ -50,11 +50,11 @@ public class MessageControllerTest {
   @Test
   void willReturnOkResponseForValidRequestPayload() throws Exception {
     MessageDto messageDto = MessageDto.builder()
-        .messageId(EXAMPLE_MESSAGE_DTO_ID)
+        .messageId(EXAMPLE_MESSAGE_DTO_ID_ONE)
         .registrationDate(EXAMPLE_DTO_DATE)
         .lastUpdated(EXAMPLE_DTO_DATE)
         .build();
-    SuccessResponse successResponse = new SuccessResponse(EXAMPLE_MESSAGE_DTO_ID);
+    SuccessResponse successResponse = new SuccessResponse(EXAMPLE_MESSAGE_DTO_ID_ONE);
 
     mockmvc.perform(post("/message")
             .content(objectMapper.writeValueAsString(messageDto))

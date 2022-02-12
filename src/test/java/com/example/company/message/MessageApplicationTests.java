@@ -1,5 +1,12 @@
 package com.example.company.message;
 
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_COMPANY_NAME_ONE;
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_COMPANY_NAME_TWO;
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_MESSAGE_DTO_ID_ONE;
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_MESSAGE_DTO_ID_TWO;
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_MESSAGE_ID_ONE;
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_MESSAGE_ID_TWO;
+import static com.example.company.message.util.MessageTestUtils.getMessageDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,7 +15,6 @@ import com.example.company.message.model.Message;
 import com.example.company.message.repository.MessageRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
@@ -28,18 +34,6 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 class MessageApplicationTests {
-
-  private static final String EXAMPLE_MESSAGE_DTO_ID_ONE = "12345678901";
-  private static final String EXAMPLE_MESSAGE_DTO_ID_TWO = "12345678902";
-  private static final BigInteger EXAMPLE_MESSAGE_ID_ONE = new BigInteger(
-      EXAMPLE_MESSAGE_DTO_ID_ONE);
-  private static final BigInteger EXAMPLE_MESSAGE_ID_TWO = new BigInteger(
-      EXAMPLE_MESSAGE_DTO_ID_TWO);
-  private static final String EXAMPLE_COMPANY_NAME_ONE = "exampleCompanyNameOne";
-  private static final String EXAMPLE_COMPANY_NAME_TWO = "exampleCompanyNameTwo";
-  private static final int EXAMPLE_INT = 0;
-  private static final double EXAMPLE_DOUBLE = 1.0;
-  private static final String EXAMPLE_DTO_DATE = "2020-10-27T14:34:06.132Z";
 
   @Autowired
   private MessageRepository messageRepository;
@@ -109,23 +103,6 @@ class MessageApplicationTests {
     assertEquals(EXAMPLE_COMPANY_NAME_TWO, retrievedCompanyName);
   }
 
-  @Test
-  void willNotInteractWithRepositoryIfInvalidMessageRequestPayload()
-      throws JsonProcessingException {
-    //GIVEN
-    MessageDto testInvalidMessageDto = MessageDto.builder().build();
-
-    //WHEN
-    testRestTemplate.exchange(
-        "/message",
-        HttpMethod.POST,
-        getRequestEntity(testInvalidMessageDto),
-        String.class);
-
-    //THEN
-    assertEquals(0, messageRepository.count());
-  }
-
   private HttpEntity<String> getRequestEntity(MessageDto testMessageDtoOne)
       throws JsonProcessingException {
     HttpHeaders headers = new HttpHeaders();
@@ -133,17 +110,6 @@ class MessageApplicationTests {
     return new HttpEntity<>(
         objectMapper.writeValueAsString(testMessageDtoOne),
         headers);
-  }
-
-  private static MessageDto getMessageDto(String id, String companyName) {
-    return MessageDto.builder()
-        .messageId(id)
-        .companyName(companyName)
-        .registrationDate(EXAMPLE_DTO_DATE)
-        .directorsCount(EXAMPLE_INT)
-        .score(EXAMPLE_DOUBLE)
-        .lastUpdated(EXAMPLE_DTO_DATE)
-        .build();
   }
 
 }
