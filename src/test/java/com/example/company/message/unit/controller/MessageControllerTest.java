@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.company.message.controller.MessageController;
+import com.example.company.message.dto.MessageDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,25 @@ public class MessageControllerTest {
   @Autowired
   private MockMvc mockmvc;
 
+  @Autowired
+  private ObjectMapper objectMapper;
+
   @Test
   void willReturnOkResponseForValidRequestPayload() throws Exception {
+    MessageDto messageDto = MessageDto.builder().msgId("messageId").build();
     mockmvc.perform(post("/message")
+            .content(objectMapper.writeValueAsString(messageDto))
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  void willReturnBadRequestResponseForInvalidRequestPayload() throws Exception {
+    MessageDto messageDto = MessageDto.builder().build();
+    mockmvc.perform(post("/message")
+            .content(objectMapper.writeValueAsString(messageDto))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
   }
 
 }

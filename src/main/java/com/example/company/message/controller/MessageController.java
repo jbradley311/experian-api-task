@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MessageController {
 
-  @PostMapping(path = "/message")
-  public ResponseEntity<String> postMessage() {
+  @PostMapping(path = "/message", consumes = "application/json", produces = "application/json")
+  public ResponseEntity<String> postMessage(@Valid @RequestBody MessageDto messageDto) {
     return new ResponseEntity<>("okay", HttpStatus.OK);
   }
 }
