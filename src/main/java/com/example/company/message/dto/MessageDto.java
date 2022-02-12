@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 public class MessageDto {
 
   @NotEmpty
+  @Pattern(regexp = "[0-9]+", message = "Id must contain only positive numeric values")
   private String msgId;
   private String companyName;
   private String registrationDate;

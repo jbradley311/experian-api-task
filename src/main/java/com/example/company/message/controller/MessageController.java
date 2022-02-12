@@ -1,6 +1,7 @@
 package com.example.company.message.controller;
 
 import com.example.company.message.dto.MessageDto;
+import com.example.company.message.model.SuccessResponse;
 import com.example.company.message.service.MessageService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class MessageController {
   private MessageService messageService;
 
   @PostMapping(path = "/message", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<String> postMessage(@Valid @RequestBody MessageDto messageDto) {
+  public ResponseEntity<SuccessResponse> postMessage(@Valid @RequestBody MessageDto messageDto) {
     messageService.register(messageDto);
-    return new ResponseEntity<>("okay", HttpStatus.OK);
+    return new ResponseEntity<>(new SuccessResponse(messageDto.getMsgId()), HttpStatus.OK);
   }
 }

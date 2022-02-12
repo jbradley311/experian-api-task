@@ -3,10 +3,12 @@ package com.example.company.message.unit.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.company.message.controller.MessageController;
 import com.example.company.message.dto.MessageDto;
+import com.example.company.message.model.SuccessResponse;
 import com.example.company.message.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +24,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MessageController.class)
 public class MessageControllerTest {
+
+  private static final String EXAMPLE_MESSAGE_DTO_ID = "12345678901";
+
 
   @Autowired
   private MockMvc mockmvc;
@@ -39,16 +44,18 @@ public class MessageControllerTest {
 
   @Test
   void willReturnOkResponseForValidRequestPayload() throws Exception {
-    MessageDto messageDto = MessageDto.builder().msgId("messageId").build();
+    MessageDto messageDto = MessageDto.builder().msgId(EXAMPLE_MESSAGE_DTO_ID).build();
+    SuccessResponse successResponse = new SuccessResponse(EXAMPLE_MESSAGE_DTO_ID);
     mockmvc.perform(post("/message")
             .content(objectMapper.writeValueAsString(messageDto))
             .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().string(objectMapper.writeValueAsString(successResponse)));
   }
 
   @Test
   void willReturnBadRequestResponseForInvalidRequestPayload() throws Exception {
-    MessageDto messageDto = MessageDto.builder().build();
+    MessageDto messageDto = MessageDto.builder().msgId("A123F").build();
     mockmvc.perform(post("/message")
             .content(objectMapper.writeValueAsString(messageDto))
             .contentType(MediaType.APPLICATION_JSON))
