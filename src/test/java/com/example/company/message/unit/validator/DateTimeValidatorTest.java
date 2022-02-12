@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class DateTimeValidatorTest {
 
+  public static final String INVALID_DATE = "invalidDate";
   private DateTimeValidator dateTimeValidator;
   private ConstraintValidatorContext mockConstraintValidatorContext;
 
@@ -28,9 +29,7 @@ public class DateTimeValidatorTest {
 
   @Test
   void nonIsoFormattedUtcDateTimeIsVerifiedAsInvalid() {
-    String invalidIsoFormattedDateTime = "invalidDate";
-    assertFalse(
-        dateTimeValidator.isValid(invalidIsoFormattedDateTime, mockConstraintValidatorContext));
+    assertFalse(dateTimeValidator.isValid(INVALID_DATE, mockConstraintValidatorContext));
   }
 
   @Test
