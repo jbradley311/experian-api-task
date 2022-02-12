@@ -1,7 +1,10 @@
 package com.example.company.message.unit.controller;
 
+import static com.example.company.message.util.MessageTestUtils.EXAMPLE_COMPANY_NAME_ONE;
 import static com.example.company.message.util.MessageTestUtils.EXAMPLE_DTO_DATE;
 import static com.example.company.message.util.MessageTestUtils.EXAMPLE_MESSAGE_DTO_ID_ONE;
+import static com.example.company.message.util.MessageTestUtils.getMessage;
+import static com.example.company.message.util.MessageTestUtils.getMessageDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -49,11 +52,7 @@ public class MessageControllerTest {
 
   @Test
   void willReturnOkResponseForValidRequestPayload() throws Exception {
-    MessageDto messageDto = MessageDto.builder()
-        .messageId(EXAMPLE_MESSAGE_DTO_ID_ONE)
-        .registrationDate(EXAMPLE_DTO_DATE)
-        .lastUpdated(EXAMPLE_DTO_DATE)
-        .build();
+    MessageDto messageDto = getMessageDto(EXAMPLE_MESSAGE_DTO_ID_ONE, EXAMPLE_COMPANY_NAME_ONE);
     SuccessResponse successResponse = new SuccessResponse(EXAMPLE_MESSAGE_DTO_ID_ONE);
 
     mockmvc.perform(post("/message")
