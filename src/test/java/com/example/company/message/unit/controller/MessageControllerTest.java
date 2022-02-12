@@ -1,5 +1,6 @@
 package com.example.company.message.unit.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -8,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.company.message.controller.MessageController;
 import com.example.company.message.dto.MessageDto;
+import com.example.company.message.model.ErrorResponse;
 import com.example.company.message.model.SuccessResponse;
 import com.example.company.message.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,9 +19,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MessageController.class)
@@ -27,6 +31,7 @@ public class MessageControllerTest {
 
   private static final String EXAMPLE_MESSAGE_DTO_ID = "12345678901";
   private static final String EXAMPLE_DTO_DATE = "2020-10-27T14:34:06.132Z";
+  public static final String EXAMPLE_INVALID_MESSAGE_DTO_ID = "A123F";
 
   @Autowired
   private MockMvc mockmvc;
@@ -45,7 +50,7 @@ public class MessageControllerTest {
   @Test
   void willReturnOkResponseForValidRequestPayload() throws Exception {
     MessageDto messageDto = MessageDto.builder()
-        .msgId(EXAMPLE_MESSAGE_DTO_ID)
+        .messageId(EXAMPLE_MESSAGE_DTO_ID)
         .registrationDate(EXAMPLE_DTO_DATE)
         .lastUpdated(EXAMPLE_DTO_DATE)
         .build();
@@ -60,11 +65,18 @@ public class MessageControllerTest {
 
   @Test
   void willReturnBadRequestResponseForInvalidRequestPayload() throws Exception {
-    MessageDto messageDto = MessageDto.builder().msgId("A123F").build();
-    mockmvc.perform(post("/message")
+    MessageDto messageDto = MessageDto.builder().messageId(EXAMPLE_INVALID_MESSAGE_DTO_ID).build();
+
+    MvcResult result = mockmvc.perform(post("/message")
             .content(objectMapper.writeValueAsString(messageDto))
             .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isBadRequest());
+        .andReturn();
+
+    ErrorResponse errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(),
+        ErrorResponse.class);
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
+    assertEquals(3, errorResponse.getErrors().size());
   }
 
 }

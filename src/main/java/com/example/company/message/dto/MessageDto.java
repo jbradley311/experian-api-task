@@ -2,6 +2,7 @@ package com.example.company.message.dto;
 
 import com.example.company.message.validator.DateTimeConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import javax.validation.constraints.NotEmpty;
@@ -21,7 +22,8 @@ public class MessageDto {
 
   @NotEmpty
   @Pattern(regexp = "[0-9]+", message = "Id must contain only positive numeric values")
-  private String msgId;
+  @JsonProperty("msg_id")
+  private String messageId;
 
   private String companyName;
 

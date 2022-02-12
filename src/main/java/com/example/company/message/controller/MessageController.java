@@ -20,6 +20,6 @@ public class MessageController {
   @PostMapping(path = "/message", consumes = "application/json", produces = "application/json")
   public ResponseEntity<SuccessResponse> postMessage(@Valid @RequestBody MessageDto messageDto) {
     messageService.register(messageDto);
-    return new ResponseEntity<>(new SuccessResponse(messageDto.getMsgId()), HttpStatus.OK);
+    return new ResponseEntity<>(new SuccessResponse(messageDto.getMessageId()), HttpStatus.OK);
   }
 }

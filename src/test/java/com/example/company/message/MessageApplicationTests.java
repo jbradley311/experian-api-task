@@ -63,9 +63,15 @@ class MessageApplicationTests {
         EXAMPLE_COMPANY_NAME_TWO);
 
     //WHEN
-    testRestTemplate.exchange("/message", HttpMethod.POST, getRequestEntity(testMessageDtoOne),
+    testRestTemplate.exchange(
+        "/message",
+        HttpMethod.POST,
+        getRequestEntity(testMessageDtoOne),
         String.class);
-    testRestTemplate.exchange("/message", HttpMethod.POST, getRequestEntity(testMessageDtoTwo),
+    testRestTemplate.exchange(
+        "/message",
+        HttpMethod.POST,
+        getRequestEntity(testMessageDtoTwo),
         String.class);
 
     //THEN
@@ -83,9 +89,15 @@ class MessageApplicationTests {
         EXAMPLE_COMPANY_NAME_TWO);
 
     //WHEN
-    testRestTemplate.exchange("/message", HttpMethod.POST, getRequestEntity(testMessageDtoOne),
+    testRestTemplate.exchange(
+        "/message",
+        HttpMethod.POST,
+        getRequestEntity(testMessageDtoOne),
         String.class);
-    testRestTemplate.exchange("/message", HttpMethod.POST, getRequestEntity(testMessageDtoTwo),
+    testRestTemplate.exchange(
+        "/message",
+        HttpMethod.POST,
+        getRequestEntity(testMessageDtoTwo),
         String.class);
 
     //THEN
@@ -95,6 +107,23 @@ class MessageApplicationTests {
 
     assertEquals(1, messageRepository.count());
     assertEquals(EXAMPLE_COMPANY_NAME_TWO, retrievedCompanyName);
+  }
+
+  @Test
+  void willNotInteractWithRepositoryIfInvalidMessageRequestPayload()
+      throws JsonProcessingException {
+    //GIVEN
+    MessageDto testInvalidMessageDto = MessageDto.builder().build();
+
+    //WHEN
+    testRestTemplate.exchange(
+        "/message",
+        HttpMethod.POST,
+        getRequestEntity(testInvalidMessageDto),
+        String.class);
+
+    //THEN
+    assertEquals(0, messageRepository.count());
   }
 
   private HttpEntity<String> getRequestEntity(MessageDto testMessageDtoOne)
@@ -108,7 +137,7 @@ class MessageApplicationTests {
 
   private static MessageDto getMessageDto(String id, String companyName) {
     return MessageDto.builder()
-        .msgId(id)
+        .messageId(id)
         .companyName(companyName)
         .registrationDate(EXAMPLE_DTO_DATE)
         .directorsCount(EXAMPLE_INT)

@@ -12,7 +12,7 @@ public class MessageMappingService {
 
   public Message toMessage(MessageDto messageDto) {
     Message message = new Message();
-    message.setMessageId(toBigInteger(messageDto.getMsgId()));
+    message.setMessageId(toBigInteger(messageDto.getMessageId()));
     message.setCompanyName(messageDto.getCompanyName());
     message.setDirectorsCount(messageDto.getDirectorsCount());
     message.setLastUpdated(toOffsetDateTime(messageDto.getLastUpdated()));

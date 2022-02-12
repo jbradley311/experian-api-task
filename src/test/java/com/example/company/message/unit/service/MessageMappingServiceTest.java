@@ -40,7 +40,7 @@ public class MessageMappingServiceTest {
 
   private static MessageDto getMessageDto() {
     return MessageDto.builder()
-        .msgId(EXAMPLE_MESSAGE_DTO_ID)
+        .messageId(EXAMPLE_MESSAGE_DTO_ID)
         .companyName(EXAMPLE_COMPANY_NAME)
         .registrationDate(EXAMPLE_DTO_DATE)
         .directorsCount(EXAMPLE_INT)
