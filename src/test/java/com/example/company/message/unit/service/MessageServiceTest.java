@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.example.company.message.dto.MessageDto;
-import com.example.company.message.model.Message;
 import com.example.company.message.repository.MessageRepository;
 import com.example.company.message.service.MessageMappingService;
 import com.example.company.message.service.MessageService;
