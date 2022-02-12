@@ -4,14 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.example.company.message.dto.MessageDto;
 import com.example.company.message.model.Message;
-import com.example.company.message.service.MessageServiceMapper;
+import com.example.company.message.service.MessageMappingService;
 import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class MessageServiceMapperTest {
+public class MessageMappingServiceTest {
 
   private static final String EXAMPLE_MESSAGE_DTO_ID = "12345678901";
   private static final String EXAMPLE_COMPANY_NAME = "exampleCompanyNameOne";
@@ -23,11 +23,11 @@ public class MessageServiceMapperTest {
   private static final OffsetDateTime EXAMPLE_ENTITY_DATE = OffsetDateTime.parse(EXAMPLE_DTO_DATE,
       DateTimeFormatter.ISO_DATE_TIME);
 
-  private MessageServiceMapper messageServiceMapper;
+  private MessageMappingService messageMappingService;
 
   @BeforeEach
   void setup() {
-    messageServiceMapper = new MessageServiceMapper();
+    messageMappingService = new MessageMappingService();
   }
 
   @Test
@@ -35,7 +35,7 @@ public class MessageServiceMapperTest {
     MessageDto testMessageDto = getMessageDto();
     Message testMessage = getMessage();
 
-    assertEquals(testMessage, messageServiceMapper.toMessage(testMessageDto));
+    assertEquals(testMessage, messageMappingService.toMessage(testMessageDto));
   }
 
   private static MessageDto getMessageDto() {

@@ -5,8 +5,10 @@ import com.example.company.message.model.Message;
 import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import org.springframework.stereotype.Service;
 
-public class MessageServiceMapper {
+@Service
+public class MessageMappingService {
 
   public Message toMessage(MessageDto messageDto) {
     Message message = new Message();
