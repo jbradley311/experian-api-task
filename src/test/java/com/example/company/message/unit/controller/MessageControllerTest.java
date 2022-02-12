@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class MessageControllerTest {
 
   private static final String EXAMPLE_MESSAGE_DTO_ID = "12345678901";
-
+  private static final String EXAMPLE_DTO_DATE = "2020-10-27T14:34:06.132Z";
 
   @Autowired
   private MockMvc mockmvc;
@@ -44,8 +44,13 @@ public class MessageControllerTest {
 
   @Test
   void willReturnOkResponseForValidRequestPayload() throws Exception {
-    MessageDto messageDto = MessageDto.builder().msgId(EXAMPLE_MESSAGE_DTO_ID).build();
+    MessageDto messageDto = MessageDto.builder()
+        .msgId(EXAMPLE_MESSAGE_DTO_ID)
+        .registrationDate(EXAMPLE_DTO_DATE)
+        .lastUpdated(EXAMPLE_DTO_DATE)
+        .build();
     SuccessResponse successResponse = new SuccessResponse(EXAMPLE_MESSAGE_DTO_ID);
+
     mockmvc.perform(post("/message")
             .content(objectMapper.writeValueAsString(messageDto))
             .contentType(MediaType.APPLICATION_JSON))

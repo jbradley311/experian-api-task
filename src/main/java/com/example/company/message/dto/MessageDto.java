@@ -1,5 +1,6 @@
 package com.example.company.message.dto;
 
+import com.example.company.message.validator.DateTimeConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -21,9 +22,16 @@ public class MessageDto {
   @NotEmpty
   @Pattern(regexp = "[0-9]+", message = "Id must contain only positive numeric values")
   private String msgId;
+
   private String companyName;
+
+  @DateTimeConstraint
   private String registrationDate;
+
   private double score;
+
   private int directorsCount;
+
+  @DateTimeConstraint
   private String lastUpdated;
 }
